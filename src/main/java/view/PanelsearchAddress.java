@@ -3,14 +3,17 @@ package view;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.text.ParseException;
 
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.text.MaskFormatter;
 
 public class PanelsearchAddress extends JFrame {
-	private JTextField cepField;
+    private JFormattedTextField cepField; 
     private JTextField logradouroField;
     private JTextField bairroField;
     private JTextField cidadeField;
@@ -20,7 +23,7 @@ public class PanelsearchAddress extends JFrame {
     private JButton BtnConsultar;
     
     public PanelsearchAddress() {
-    	inicializarInterface();
+        inicializarInterface();
     }
     
     private void inicializarInterface() {
@@ -29,7 +32,7 @@ public class PanelsearchAddress extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new GridBagLayout());
         
-        // CEP
+        // CEP 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -40,7 +43,18 @@ public class PanelsearchAddress extends JFrame {
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 1; gbc.gridy = 0;
-        cepField = new JTextField(15);
+        
+        
+        try {
+            MaskFormatter cepMask = new MaskFormatter("#####-###");
+            cepMask.setPlaceholderCharacter('_');
+            cepField = new JFormattedTextField(cepMask);
+            cepField.setColumns(15);
+        } catch (ParseException e) {
+            // Fallback caso haja erro na criação da máscara
+            cepField = new JFormattedTextField();
+            cepField.setColumns(15);
+        }
         add(cepField, gbc);
 
         // Botão Consultar
@@ -128,10 +142,21 @@ public class PanelsearchAddress extends JFrame {
         complementoField = new JTextField(30);
         add(complementoField, gbc);
 
-      
         // Configurações da janela
         pack();
         setLocationRelativeTo(null);
         setResizable(false);
+    }
+    
+    
+    public String getCepSemFormatacao() {
+        String cep = cepField.getText();
+        return cep.replaceAll("[^0-9]", ""); 
+    }
+    
+    
+    public boolean isCepValido() {
+        String cepLimpo = getCepSemFormatacao();
+        return cepLimpo.length() == 8;
     }
 }
