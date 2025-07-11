@@ -7,6 +7,6 @@ Aplicação  Java para consultar endereços através do CEP, utilizando a API Vi
 
 ✔ Consulta de endereços por CEP  
 ✔ Exibição detalhada dos dados (logradouro, bairro, cidade, UF)  
-✔ Salvamento manual/automático das consultas em arquivo ".txt"
+✔ Salvamento manual/automático das consultas em arquivo ".txt"  
 ✔ Histórico de consultas salvas  
 ✔ Limpeza do histórico  
