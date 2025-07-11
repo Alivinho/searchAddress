@@ -65,6 +65,23 @@ public class EnderecoService {
     }
 	
 	
+    private String getStringOrEmpty(JsonObject json, String key) {
+        return json.has(key) && !json.get(key).isJsonNull() ? 
+               json.get(key).getAsString() : "";
+    }
+
+    
+    public boolean validarCep(String cep) {
+        if (cep == null) return false;
+        
+        // Remove caracteres não numéricos
+        String cepLimpo = cep.replaceAll("[^0-9]", "");
+        
+        if (cepLimpo.length() != 8) return false;
+        
+        // Verifica se não é um CEP com todos os dígitos iguais (ex: 00000000)
+        return !cepLimpo.matches("(\\d)\\1{7}");
+    }
     
 
 }
